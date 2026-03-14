@@ -24,7 +24,7 @@ defmodule FlightTracker.MixProject do
     [
       {:commanded, "~> 1.4"},
       {:jason, "~> 1.4"},
-      {:typedstruct, "~> 0.5"},
+      {:typed_structor, "~> 0.6"},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end

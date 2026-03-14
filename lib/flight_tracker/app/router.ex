@@ -4,7 +4,28 @@ defmodule FlightTracker.App.Router do
   """
   use Commanded.Commands.Router
 
-  # TODO: Identify aggregates
+  alias FlightTracker.App.Aggregates.Aircraft
 
-  # TODO: Dispatch commands to aggregates
+  alias FlightTracker.App.Commands.{
+    IdentifyAircraftByAllCall,
+    IdentifyAircraftByCallsign,
+    IdentifyAircraftBySquawk,
+    UpdateAirbornePosition,
+    UpdateAirborneVelocity,
+    UpdateSurfacePosition
+  }
+
+  identify(Aircraft, by: :icao_address, prefix: "aircraft-")
+
+  dispatch(
+    [
+      IdentifyAircraftByAllCall,
+      IdentifyAircraftByCallsign,
+      IdentifyAircraftBySquawk,
+      UpdateAirbornePosition,
+      UpdateAirborneVelocity,
+      UpdateSurfacePosition
+    ],
+    to: Aircraft
+  )
 end
