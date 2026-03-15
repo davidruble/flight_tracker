@@ -7,7 +7,9 @@ defmodule FlightTracker.MixProject do
       version: "0.1.0",
       elixir: "~> 1.19",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      elixirc_options: compiler_options(),
+      test_coverage: test_coverage()
     ]
   end
 
@@ -26,6 +28,18 @@ defmodule FlightTracker.MixProject do
       {:jason, "~> 1.4"},
       {:typed_structor, "~> 0.6"},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
+    ]
+  end
+
+  defp compiler_options do
+    [
+      warnings_as_errors: true
+    ]
+  end
+
+  defp test_coverage do
+    [
+      summary: [threshold: 80]
     ]
   end
 end

@@ -1,4 +1,3 @@
-# TODO: Add testing
 defmodule FlightTracker.App.Aggregates.Aircraft do
   @moduledoc """
   Maintains the state of a specific aircraft based on its ICAO address.
@@ -36,8 +35,8 @@ defmodule FlightTracker.App.Aggregates.Aircraft do
       - `:squawk_code` is a 4-digit transponder code assigned by Air Traffic Control. This can be an
         aircraft identifier or a standard/emergency code.
       - `:altitude` is barometric relative to sea level (1013.2mb). Measured in feet.
-      - `:latitude` is positive for E, negative for W
-      - `:longitude` is positive for N, negative for S
+      - `:latitude` is positive for N, negative for S
+      - `:longitude` is positive for W, negative for E
       - `:ground_speed` is speed relative to the ground and not true airspeed. Measured in knots.
       - `:track` is not the heading but the real direction the plane is moving, taking drift into
         consideration. Measured in clockwise degrees from true north.
@@ -71,7 +70,7 @@ defmodule FlightTracker.App.Aggregates.Aircraft do
       icao_address: cmd.icao_address,
       callsign: cmd.callsign,
       flight_id: cmd.flight_id,
-      aircraft_id: cmd.flight_id,
+      aircraft_id: cmd.aircraft_id,
       generated_ts: cmd.generated_ts
     }
 
@@ -124,18 +123,23 @@ defmodule FlightTracker.App.Aggregates.Aircraft do
           icao_address: cmd.icao_address,
           is_on_ground: cmd.is_on_ground,
           flight_id: cmd.flight_id,
-          aircraft_id: cmd.flight_id,
+          aircraft_id: cmd.aircraft_id,
           generated_ts: cmd.generated_ts
         }
       else
         nil
       end
 
-    squawk_evt = %SquawkCodeSet{
-      icao_address: cmd.icao_address,
-      squawk_code: cmd.squawk_code,
-      generated_ts: cmd.generated_ts
-    }
+    squawk_evt =
+      if state.squawk_code != cmd.squawk_code do
+        %SquawkCodeSet{
+          icao_address: cmd.icao_address,
+          squawk_code: cmd.squawk_code,
+          generated_ts: cmd.generated_ts
+        }
+      else
+        nil
+      end
 
     emer_evt = update_emergency_status(state, cmd)
 
@@ -148,7 +152,7 @@ defmodule FlightTracker.App.Aggregates.Aircraft do
       icao_address: cmd.icao_address,
       is_on_ground: cmd.is_on_ground,
       flight_id: cmd.flight_id,
-      aircraft_id: cmd.flight_id,
+      aircraft_id: cmd.aircraft_id,
       generated_ts: cmd.generated_ts
     }
 

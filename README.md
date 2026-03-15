@@ -6,6 +6,14 @@ The data is ingested in [BaseStation SBS format](http://woodair.net/sbs/article/
 
 Inspired by an exercise in the book _Real-World Event Sourcing_ published by The Pragmatic Programmers.
 
+## Development
+
+- Intall Elixir >= 1.19
+- After cloning run `git config --local core.hooksPath .githooks/` to setup git hooks
+- I recommend installing VS Code with the following plugins and enable Format on Save:
+  - pantajoe.vscode-elixir-credo
+  - jakebecker.elixir-ls
+
 ## Running The Application
 
 To run locally, use `mix app.start`.
