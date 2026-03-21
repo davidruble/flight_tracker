@@ -10,6 +10,7 @@ Inspired by an exercise in the book _Real-World Event Sourcing_ published by The
 
 - Intall Elixir >= 1.19
 - After cloning run `git config --local core.hooksPath .githooks/` to setup git hooks
+- Run `mix do deps.get + deps.compile`
 - I recommend installing VS Code with the following plugins and enable Format on Save:
   - pantajoe.vscode-elixir-credo
   - jakebecker.elixir-ls
@@ -23,6 +24,40 @@ To run in an interactive console, use `iex -S mix`.
 TODO: Describe how to run from a file.
 
 TODO: Describe how to run dump1090 alongside the application.
+
+TODO: Update the below example when file is specified dynamically
+
+### Sample interactive run using hard-coded basestation.csv
+
+```elixir
+iex -S mix
+
+# ... application reads file and processes commands ... #
+
+alias FlightTracker.App.Application
+alias FlightTracker.App.Aggregates.Aircraft
+alias Commanded.Aggregates.Aggregate
+
+Aggregate.aggregate_state(Application, Aircraft, "aircraft-4CA2CB")
+
+# This will be printed to the console
+%FlightTracker.App.Aggregates.Aircraft{
+  icao_address: "4CA2CB",
+  updated_ts: ~U[2008-11-28 14:53:50.391Z],
+  squawk_code: nil,
+  callsign: nil,
+  flight_id: "10061",
+  aircraft_id: "769",
+  altitude: nil,
+  latitude: nil,
+  longitude: nil,
+  ground_speed: 367.7,
+  track: 138.6,
+  vertical_rate: -2432,
+  is_on_ground: false,
+  is_emergency: false
+}
+```
 
 ## Flight Plan
 

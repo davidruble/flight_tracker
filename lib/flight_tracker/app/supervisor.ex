@@ -14,11 +14,13 @@ defmodule FlightTracker.App.Supervisor do
   def init(_arg) do
     children = [
       # Application
-      App.Application
+      App.Application,
+
+      # Gateways
+      # TODO: Pass filename in here dynamically from application
+      {App.Gateways.FileInjector, "basestation.csv"}
 
       # TODO: Projectors
-
-      # TODO: Gateways
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

@@ -9,7 +9,8 @@ defmodule FlightTracker.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       elixirc_options: compiler_options(),
-      test_coverage: test_coverage()
+      test_coverage: test_coverage(),
+      aliases: aliases()
     ]
   end
 
@@ -25,6 +26,8 @@ defmodule FlightTracker.MixProject do
   defp deps do
     [
       {:commanded, "~> 1.4"},
+      {:gen_stage, "~> 1.3"},
+      {:nimble_csv, "~> 1.3"},
       {:jason, "~> 1.4"},
       {:typed_structor, "~> 0.6"},
       {:timex, "~> 3.7"},
@@ -41,6 +44,13 @@ defmodule FlightTracker.MixProject do
   defp test_coverage do
     [
       summary: [threshold: 80]
+    ]
+  end
+
+  defp aliases do
+    [
+      # Prevent mix test from starting the supervision tree (including GenStages, etc)
+      test: ["test --no-start"]
     ]
   end
 end

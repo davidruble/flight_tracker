@@ -8,15 +8,20 @@ defmodule FlightTracker.App.Services.AppService do
 
   @doc """
   Maps aircraft data to a command and dispatches it to the proper aircraft aggregate.
+  If `blocking: true` is provided, then it will employ strong consistency guarantees
+  when dispatching commands and will block until the command is fully processed.
 
   See documentation for FlightTracker.App.Services.DataMapper.basestation_sbs_to_map/1 for
   expected map structure.
   """
-  @spec update_aircraft(map()) :: :ok | {:error, term()}
-  def update_aircraft(data) do
+  @spec update_aircraft(map(), blocking: boolean()) :: :ok | {:error, term()}
+  def update_aircraft(data, opts \\ []) do
+    blocking = Keyword.get(opts, :blocking, false)
+    consistency = if blocking, do: :strong, else: :eventual
+
     case to_command(data) do
       :no_op -> :ok
-      cmd -> Application.dispatch(cmd)
+      cmd -> Application.dispatch(cmd, consistency: consistency)
     end
   end
 
