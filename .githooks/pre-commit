@@ -2,4 +2,6 @@
 
 mix format
 
+mix dialyzer
+
 mix test
