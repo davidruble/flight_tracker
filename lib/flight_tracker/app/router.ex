@@ -26,6 +26,7 @@ defmodule FlightTracker.App.Router do
       UpdateAirborneVelocity,
       UpdateSurfacePosition
     ],
-    to: Aircraft
+    to: Aircraft,
+    lifespan: Aircraft.Lifespan
   )
 end
