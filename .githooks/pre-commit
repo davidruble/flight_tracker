@@ -1,7 +1,4 @@
 #!/bin/sh
 
-mix format
-
 mix dialyzer
-
 mix test

@@ -17,43 +17,48 @@ Inspired by an exercise in the book _Real-World Event Sourcing_ published by The
 
 ## Running The Application
 
-To run locally, use `mix app.start`.
+The application supports the following command line arguments:
+  - `--filename my_file.csv` or `-f my_file.csv` 
+    - `my_file.csv` needs to reside in `priv/data`
+    - If this is provided, the application will read from the file and NOT from a live source
 
-To run in an interactive console, use `iex -S mix`.
+### Running From A File
 
-TODO: Describe how to run from a file.
+To run locally: 
+- `elixir -S mix run --no-halt -- --filename basestation.csv`.
+
+To run in an interactive console where you can check aggregate or DB state:
+- `iex -S mix run -- -f basestation.csv`
+
+### Running With Live Data
 
 TODO: Describe how to run dump1090 alongside the application.
 
-TODO: Update the below example when file is specified dynamically
-
-### Sample interactive run using hard-coded basestation.csv
+### Sample interactive run using the file `bigchungus.csv`
 
 ```elixir
-iex -S mix
+iex -S mix run -- -f bigchungus.csv
 
-# ... application reads file and processes commands ... #
+#
+# ... application reads file and processes commands ...
+#
 
-alias FlightTracker.App.Application
-alias FlightTracker.App.Aggregates.Aircraft
-alias Commanded.Aggregates.Aggregate
+Mix.Task.rerun("get_agg_state", ["400159"])
 
-Aggregate.aggregate_state(Application, Aircraft, "aircraft-4CA2CB")
-
-# This will be printed to the console
-%FlightTracker.App.Aggregates.Aircraft{
-  icao_address: "4CA2CB",
-  updated_ts: ~U[2008-11-28 14:53:50.391Z],
-  squawk_code: nil,
-  callsign: nil,
-  flight_id: "10061",
-  aircraft_id: "769",
-  altitude: nil,
-  latitude: nil,
-  longitude: nil,
-  ground_speed: 367.7,
-  track: 138.6,
-  vertical_rate: -2432,
+# Something like this will be printed to the console
+FlightTracker.App.Aggregates.Aircraft{
+  icao_address: "400159",
+  updated_ts: ~U[2018-04-03 19:02:40.178Z],
+  squawk_code: 1017,
+  callsign: "SDM6244",
+  flight_id: "1",
+  aircraft_id: "1",
+  altitude: 2650,
+  latitude: 59.71545,
+  longitude: 30.63446,
+  ground_speed: 198.0,
+  track: 314.0,
+  vertical_rate: -64,
   is_on_ground: false,
   is_emergency: false
 }
@@ -61,7 +66,7 @@ Aggregate.aggregate_state(Application, Aircraft, "aircraft-4CA2CB")
 
 ## Flight Plan
 
-- [ ] Read static data from a csv file
+- [x] Read static data from a csv file
 - [ ] Read real data from dump1090
 - [ ] Create a scheduled task that cleans out old data so it doesn't blow up in size
 - [ ] Display flight data in a UI leveraging Phoenix LiveView

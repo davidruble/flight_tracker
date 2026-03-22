@@ -41,7 +41,7 @@ defmodule FlightTracker.App.Aggregates.Aircraft do
       - `:track` is not the heading but the real direction the plane is moving, taking drift into
         consideration. Measured in clockwise degrees from true north.
       - `:vertical_rate` is the speed at which the aircraft is ascending/descending. Usually only
-        at 24-64 ft resolution. Measured in ft/min.
+        at 24-64 ft resolution. Measured in ft/min. Positive for ascending, negative for descending.
     """
     field :icao_address, String.t(), enforce: true
     field :updated_ts, DateTime.t(), enforce: true

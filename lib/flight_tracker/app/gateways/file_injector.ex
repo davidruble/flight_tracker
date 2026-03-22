@@ -3,6 +3,7 @@ defmodule FlightTracker.App.Gateways.FileInjector do
   Injects data from a file into the application in a stream similar to a real ADS-B receiver.
   """
   use GenStage, restart: :transient
+
   require Logger
 
   alias FlightTracker.App.Services.{
@@ -14,7 +15,7 @@ defmodule FlightTracker.App.Gateways.FileInjector do
 
   @doc "Triggers the process of loading the file and sending data into the domain"
   def start_link(filename) do
-    Logger.info("Initializing file injector")
+    Logger.info("Initializing File Injector")
     stream = build_stream(filename)
     {:ok, line_producer} = GenStage.from_enumerable(stream)
     GenStage.start_link(__MODULE__, line_producer, name: __MODULE__)
@@ -22,7 +23,7 @@ defmodule FlightTracker.App.Gateways.FileInjector do
 
   @impl true
   def init(line_producer) do
-    {:consumer, :no_state, subscribe_to: [{line_producer, max_demand: 5}]}
+    {:consumer, :no_state, subscribe_to: [{line_producer, max_demand: 10}]}
   end
 
   @impl true

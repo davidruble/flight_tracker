@@ -10,7 +10,8 @@ defmodule FlightTracker.MixProject do
       deps: deps(),
       elixirc_options: compiler_options(),
       test_coverage: test_coverage(),
-      aliases: aliases()
+      aliases: aliases(),
+      dialyzer: dialyzer()
     ]
   end
 
@@ -51,6 +52,12 @@ defmodule FlightTracker.MixProject do
     [
       # Prevent mix test from starting the supervision tree (including GenStages, etc)
       test: ["test --no-start"]
+    ]
+  end
+
+  defp dialyzer do
+    [
+      plt_add_apps: [:mix]
     ]
   end
 end
