@@ -1,0 +1,24 @@
+{
+    "elixirLS.envVariables": {},
+    "[elixir]": {
+        "editor.defaultFormatter": "JakeBecker.elixir-ls"
+    },
+    "[phoenix-heex]": {
+        "editor.defaultFormatter": "JakeBecker.elixir-ls"
+    },
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "emmet.includeLanguages": {
+        "phoenix-heex": "html",
+        "html-eex": "html"
+    },
+    "emmet.excludeLanguages": [
+        "markdown",
+        "elixir"
+    ],
+    "files.associations": {
+        "*.heex": "phoenix-heex"
+    },
+    "elixirLS.dialyzerEnabled": true,
+    "elixirLS.mixEnv": "dev",
+}
