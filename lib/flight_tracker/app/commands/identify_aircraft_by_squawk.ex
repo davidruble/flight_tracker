@@ -12,6 +12,6 @@ defmodule FlightTracker.App.Commands.IdentifyAircraftBySquawk do
     field :is_on_ground, boolean()
     field :flight_id, String.t()
     field :aircraft_id, String.t()
-    field :generated_ts, DateTime.t()
+    field :generated_ts, non_neg_integer()
   end
 end

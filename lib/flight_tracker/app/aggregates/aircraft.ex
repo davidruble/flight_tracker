@@ -27,35 +27,13 @@ defmodule FlightTracker.App.Aggregates.Aircraft do
 
   typed_structor do
     @typedoc """
-    Represents the current known state of the aircraft. Any data can come in any order.
-
-    Notes:
-      - `:icao_address` is a unique, permanent, 6 character hex identifier assigned by the International
-        Civil Aviation Organization (ICAO) to an aircraft.
-      - `:squawk_code` is a 4-digit transponder code assigned by Air Traffic Control. This can be an
-        aircraft identifier or a standard/emergency code.
-      - `:altitude` is barometric relative to sea level (1013.2mb). Measured in feet.
-      - `:latitude` is positive for N, negative for S
-      - `:longitude` is positive for W, negative for E
-      - `:ground_speed` is speed relative to the ground and not true airspeed. Measured in knots.
-      - `:track` is not the heading but the real direction the plane is moving, taking drift into
-        consideration. Measured in clockwise degrees from true north.
-      - `:vertical_rate` is the speed at which the aircraft is ascending/descending. Usually only
-        at 24-64 ft resolution. Measured in ft/min. Positive for ascending, negative for descending.
+    Represents an aircraft. Includes only the minimal data required for command context.
+    See `FlightTracer.App.Projectors.Aircraft` for the full available aircraft data.
     """
     field :icao_address, String.t(), enforce: true
-    field :updated_ts, DateTime.t(), enforce: true
     field :squawk_code, non_neg_integer()
     field :callsign, String.t()
     field :flight_id, String.t()
-    field :aircraft_id, String.t()
-    field :altitude, non_neg_integer()
-    field :latitude, float()
-    field :longitude, float()
-    field :ground_speed, float()
-    field :track, float()
-    field :vertical_rate, integer()
-    field :is_on_ground, boolean(), default: false
     field :is_emergency, boolean(), default: false
   end
 
@@ -171,34 +149,21 @@ defmodule FlightTracker.App.Aggregates.Aircraft do
       state
       | icao_address: evt.icao_address,
         callsign: evt.callsign,
-        is_on_ground: evt.is_on_ground,
-        flight_id: evt.flight_id,
-        aircraft_id: evt.aircraft_id,
-        updated_ts: evt.generated_ts
+        flight_id: evt.flight_id
     }
   end
 
   def apply(%ModuleState{} = state, %PositionUpdated{} = evt) do
     %ModuleState{
       state
-      | icao_address: evt.icao_address,
-        altitude: evt.altitude,
-        latitude: evt.latitude,
-        longitude: evt.longitude,
-        is_on_ground: evt.is_on_ground,
-        updated_ts: evt.generated_ts
+      | icao_address: evt.icao_address
     }
   end
 
   def apply(%ModuleState{} = state, %VelocityUpdated{} = evt) do
     %ModuleState{
       state
-      | icao_address: evt.icao_address,
-        ground_speed: evt.ground_speed,
-        track: evt.track,
-        vertical_rate: evt.vertical_rate,
-        is_on_ground: evt.is_on_ground,
-        updated_ts: evt.generated_ts
+      | icao_address: evt.icao_address
     }
   end
 
@@ -206,8 +171,7 @@ defmodule FlightTracker.App.Aggregates.Aircraft do
     %ModuleState{
       state
       | icao_address: evt.icao_address,
-        is_emergency: evt.is_emergency,
-        updated_ts: evt.generated_ts
+        is_emergency: evt.is_emergency
     }
   end
 
@@ -215,8 +179,7 @@ defmodule FlightTracker.App.Aggregates.Aircraft do
     %ModuleState{
       state
       | icao_address: evt.icao_address,
-        squawk_code: evt.squawk_code,
-        updated_ts: evt.generated_ts
+        squawk_code: evt.squawk_code
     }
   end
 

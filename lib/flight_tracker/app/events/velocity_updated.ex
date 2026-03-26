@@ -12,6 +12,6 @@ defmodule FlightTracker.App.Events.VelocityUpdated do
     field :track, float()
     field :vertical_rate, integer(), default: 0
     field :is_on_ground, boolean(), default: false
-    field :generated_ts, DateTime.t()
+    field :generated_ts, non_neg_integer()
   end
 end

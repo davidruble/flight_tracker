@@ -11,6 +11,6 @@ defmodule FlightTracker.App.Commands.UpdateAirbornePosition do
     field :latitude, float()
     field :longitude, float()
     field :is_emergency, boolean()
-    field :generated_ts, DateTime.t()
+    field :generated_ts, non_neg_integer()
   end
 end

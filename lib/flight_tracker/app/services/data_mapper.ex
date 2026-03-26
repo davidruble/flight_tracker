@@ -82,11 +82,11 @@ defmodule FlightTracker.App.Services.DataMapper do
 
   def basestation_sbs_to_map(_data), do: {:error, :malformed_data}
 
-  @spec parse_datetime(String.t()) :: {:ok, DateTime.t()} | {:error, term()}
+  @spec parse_datetime(String.t()) :: {:ok, non_neg_integer()} | {:error, term()}
   defp parse_datetime(str) do
     with {:ok, naive_time} <- Timex.parse(str, @datetime_format, :strftime),
-         utc_time <- Timex.to_datetime(naive_time) do
-      {:ok, utc_time}
+         epoch_seconds <- Timex.to_unix(naive_time) do
+      {:ok, epoch_seconds}
     end
   end
 

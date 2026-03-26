@@ -9,6 +9,6 @@ defmodule FlightTracker.App.Events.EmergencyStatusUpdated do
     @typedoc "Represents an aircraft's emergency state."
     field :icao_address, String.t(), enforce: true
     field :is_emergency, boolean(), default: false
-    field :generated_ts, DateTime.t()
+    field :generated_ts, non_neg_integer()
   end
 end

@@ -39,7 +39,7 @@ defmodule FlightTracker.App.Services.DataMapperTest do
                emergency_flag: true,
                ident_flag: false,
                on_ground_flag: false,
-               datetime_generated: ~U[2026-03-20 15:02:10.756Z]
+               datetime_generated: DateTime.to_unix(~U[2026-03-20 15:02:10.756Z])
              }
            }
   end
@@ -72,7 +72,7 @@ defmodule FlightTracker.App.Services.DataMapperTest do
                emergency_flag: false,
                ident_flag: false,
                on_ground_flag: false,
-               datetime_generated: ~U[2026-03-20 02:05:10Z]
+               datetime_generated: DateTime.to_unix(~U[2026-03-20 02:05:10.000Z])
              }
            }
   end
@@ -117,7 +117,7 @@ defmodule FlightTracker.App.Services.DataMapperTest do
       # aircraft_id
       "AIR1",
       # icao_address
-      "A00001",
+      "AC82EC",
       # flight_id
       "FLY1",
       # date_generated

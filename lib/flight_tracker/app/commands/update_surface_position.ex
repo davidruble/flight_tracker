@@ -13,6 +13,6 @@ defmodule FlightTracker.App.Commands.UpdateSurfacePosition do
     field :track, float()
     field :latitude, float()
     field :longitude, float()
-    field :generated_ts, DateTime.t()
+    field :generated_ts, non_neg_integer()
   end
 end

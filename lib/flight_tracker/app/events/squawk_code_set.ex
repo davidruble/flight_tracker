@@ -9,6 +9,6 @@ defmodule FlightTracker.App.Events.SquawkCodeSet do
     @typedoc "The squawk code has been set or updated."
     field :icao_address, String.t(), enforce: true
     field :squawk_code, non_neg_integer(), enforce: true
-    field :generated_ts, DateTime.t()
+    field :generated_ts, non_neg_integer()
   end
 end

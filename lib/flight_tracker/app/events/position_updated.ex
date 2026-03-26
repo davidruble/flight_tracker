@@ -12,6 +12,6 @@ defmodule FlightTracker.App.Events.PositionUpdated do
     field :latitude, float()
     field :longitude, float()
     field :is_on_ground, boolean(), default: false
-    field :generated_ts, DateTime.t()
+    field :generated_ts, non_neg_integer()
   end
 end

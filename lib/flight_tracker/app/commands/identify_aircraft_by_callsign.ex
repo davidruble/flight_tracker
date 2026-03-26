@@ -11,6 +11,6 @@ defmodule FlightTracker.App.Commands.IdentifyAircraftByCallsign do
     field :callsign, String.t()
     field :flight_id, String.t()
     field :aircraft_id, String.t()
-    field :generated_ts, DateTime.t()
+    field :generated_ts, non_neg_integer()
   end
 end

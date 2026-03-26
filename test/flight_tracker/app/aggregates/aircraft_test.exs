@@ -1,20 +1,21 @@
 defmodule FlightTracker.App.Aggregates.AircraftTest do
   use ExUnit.Case
 
+  require Logger
+
   alias FlightTracker.App.Aggregates.Aircraft
   alias FlightTracker.App.Commands
   alias FlightTracker.App.Events
 
   test "identifies a new aircraft by callsign" do
-    icao = "A00001"
+    icao = "AC82EC"
     callsign = "CALL123"
     flight_id = "FLIGHT123"
     aircraft_id = "AIR123"
-    generated_ts = DateTime.utc_now()
+    generated_ts = System.system_time(:second)
 
     initial_state = %Aircraft{
-      icao_address: nil,
-      updated_ts: nil
+      icao_address: nil
     }
 
     cmds = [
@@ -41,18 +42,17 @@ defmodule FlightTracker.App.Aggregates.AircraftTest do
   end
 
   test "emergency status is set and unset by commands that impact it" do
-    icao = "A00001"
+    icao = "AC82EC"
     squawk = 1200
     flight_id = "FLIGHT123"
     aircraft_id = "AIR123"
     latitude = 29.534
     longitude = -98.469
     altitude = 809
-    ts = DateTime.utc_now()
+    ts = System.system_time(:second)
 
     initial_state = %Aircraft{
-      icao_address: nil,
-      updated_ts: nil
+      icao_address: nil
     }
 
     cmds = [
@@ -111,7 +111,7 @@ defmodule FlightTracker.App.Aggregates.AircraftTest do
   end
 
   test "ignores identification for aircraft already known" do
-    icao = "A00001"
+    icao = "AC82EC"
     squawk = 1200
     callsign = "CALL123"
     flight_id = "FLIGHT123"
@@ -124,10 +124,7 @@ defmodule FlightTracker.App.Aggregates.AircraftTest do
       squawk_code: squawk,
       callsign: callsign,
       flight_id: flight_id,
-      aircraft_id: aircraft_id,
-      is_emergency: is_emergency,
-      is_on_ground: is_on_ground,
-      updated_ts: DateTime.utc_now()
+      is_emergency: is_emergency
     }
 
     cmds = [
@@ -136,7 +133,7 @@ defmodule FlightTracker.App.Aggregates.AircraftTest do
         callsign: callsign,
         flight_id: flight_id,
         aircraft_id: aircraft_id,
-        generated_ts: DateTime.utc_now()
+        generated_ts: System.system_time(:second)
       },
       %Commands.IdentifyAircraftBySquawk{
         icao_address: icao,
@@ -145,14 +142,14 @@ defmodule FlightTracker.App.Aggregates.AircraftTest do
         is_on_ground: is_on_ground,
         flight_id: flight_id,
         aircraft_id: aircraft_id,
-        generated_ts: DateTime.utc_now()
+        generated_ts: System.system_time(:second)
       },
       %Commands.IdentifyAircraftByAllCall{
         icao_address: icao,
         is_on_ground: is_on_ground,
         flight_id: flight_id,
         aircraft_id: aircraft_id,
-        generated_ts: DateTime.utc_now()
+        generated_ts: System.system_time(:second)
       }
     ]
 
@@ -162,7 +159,7 @@ defmodule FlightTracker.App.Aggregates.AircraftTest do
   end
 
   test "track the path of an active, initially unknown aircraft" do
-    icao = "A00001"
+    icao = "AC82EC"
     flight_id = "FLIGHT123"
     aircraft_id = "AIR123"
 
@@ -172,7 +169,7 @@ defmodule FlightTracker.App.Aggregates.AircraftTest do
       altitude: 809,
       track: 90.0,
       speed: 150.0,
-      ts: DateTime.utc_now()
+      ts: System.system_time(:second)
     }
 
     flying = %{
@@ -182,12 +179,11 @@ defmodule FlightTracker.App.Aggregates.AircraftTest do
       track: 270.0,
       speed: 500.0,
       vert_rate: 2048,
-      ts: DateTime.utc_now()
+      ts: System.system_time(:second)
     }
 
     initial_state = %Aircraft{
-      icao_address: nil,
-      updated_ts: nil
+      icao_address: nil
     }
 
     cmds = [
@@ -269,18 +265,9 @@ defmodule FlightTracker.App.Aggregates.AircraftTest do
 
     assert state == %Aircraft{
              icao_address: icao,
-             updated_ts: flying.ts,
              squawk_code: nil,
              callsign: nil,
              flight_id: flight_id,
-             aircraft_id: aircraft_id,
-             altitude: flying.altitude,
-             latitude: flying.latitude,
-             longitude: flying.longitude,
-             ground_speed: flying.speed,
-             track: flying.track,
-             vertical_rate: flying.vert_rate,
-             is_on_ground: false,
              is_emergency: false
            }
   end
@@ -298,7 +285,7 @@ defmodule FlightTracker.App.Aggregates.AircraftTest do
           apply_event(evt, acc)
 
         _ ->
-          IO.puts("Failed to execute command #{IO.inspect(cmd)}.")
+          Logger.error("Failed to execute command #{IO.inspect(cmd)}.")
           acc
       end
     end)

@@ -15,19 +15,21 @@ defmodule FlightTracker.App.Supervisor do
     children =
       [
         # Application
-        App.Application
+        App.Application,
 
-        # TODO: Projectors
+        # Projectors
+        App.Projectors.Aircraft
       ]
       |> append_gateways(args)
 
     Supervisor.init(children, strategy: :one_for_one)
   end
 
+  @spec append_gateways(list(Supervisor.module_spec()), term()) :: list(Supervisor.module_spec())
   defp append_gateways(children, args) do
     case args do
       [filename: filename] when is_binary(filename) ->
-        [{App.Gateways.FileInjector, filename}] ++ children
+        children ++ [{App.Gateways.FileInjector, filename}]
 
       _ ->
         # TODO: Start gateway that hooks into live data

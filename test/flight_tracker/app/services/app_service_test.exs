@@ -102,7 +102,7 @@ defmodule FlightTracker.App.Services.AppServiceTest do
     %{
       transmission_type: transmission_type,
       aircraft_id: "AIRCRAFT123",
-      icao_address: "A00001",
+      icao_address: "AC82EC",
       flight_id: "FLIGHT123",
       callsign: "CALL123",
       altitude: 1000,

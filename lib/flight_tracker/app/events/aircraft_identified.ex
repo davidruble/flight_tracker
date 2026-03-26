@@ -13,6 +13,6 @@ defmodule FlightTracker.App.Events.AircraftIdentified do
     field :is_on_ground, boolean(), default: false
     field :flight_id, String.t()
     field :aircraft_id, String.t()
-    field :generated_ts, DateTime.t()
+    field :generated_ts, non_neg_integer()
   end
 end

@@ -10,6 +10,6 @@ defmodule FlightTracker.App.Commands.UpdateAirborneVelocity do
     field :ground_speed, float()
     field :track, float()
     field :vertical_rate, integer()
-    field :generated_ts, DateTime.t()
+    field :generated_ts, non_neg_integer()
   end
 end
